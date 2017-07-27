@@ -4,6 +4,8 @@
   "description": "backgammon with socket.io and canvas",
   "main": "index.js",
   "scripts": {
+    "start": "node bin/dev.js",
+    "dev": "webpack-dev-server --config config/webpack.config.js --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +20,11 @@
   "bugs": {
     "url": "https://gitlab.com/yernsun/backgammon/issues"
   },
-  "homepage": "https://gitlab.com/yernsun/backgammon#README"
+  "homepage": "https://gitlab.com/yernsun/backgammon#README",
+  "dependencies": {
+    "webpack": "^3.4.1",
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-dev-server": "^2.6.1",
+    "webpack-hot-middleware": "^2.18.2"
+  }
 }
