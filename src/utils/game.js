@@ -18,7 +18,7 @@ class Game {
     }
 
     put({ x, y }) {
-
+        
     }
 
     isFinish() {

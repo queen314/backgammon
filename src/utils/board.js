@@ -39,9 +39,18 @@ class Board {
     //     return true;
     // }
 
-    set({ x, y }, player) {
-        let playerIndex = this._players.indexOf(player);
+    put({ x, y }, value) {
+        if (this._layout[i][j]) {
+            return false;
+        }
+        else{
+            this._layout[i][j] = value;
+            return true;
+        }
     }
+    // set({ x, y }, player) {
+    //     let playerIndex = this._players.indexOf(player);
+    // }
 
     _initLayout() {
 
