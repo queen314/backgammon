@@ -1,0 +1,22 @@
+{
+  "name": "backgammon",
+  "version": "0.0.1",
+  "description": "backgammon with socket.io and canvas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/yernsun/backgammon.git"
+  },
+  "keywords": [
+    "backgammon"
+  ],
+  "author": "YernSun <yernsun@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/yernsun/backgammon/issues"
+  },
+  "homepage": "https://gitlab.com/yernsun/backgammon#README"
+}
