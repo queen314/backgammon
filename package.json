@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node bin/dev.js",
     "dev": "webpack-dev-server --config config/webpack.config.js --inline --hot",
-    "compile": "webpack --config config/webpack.config.js"
+    "compile": "webpack --config config/webpack.config.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -22,9 +23,17 @@
   },
   "homepage": "https://github.com/yernsun/backgammon#README",
   "dependencies": {
+    "css-loader": "^0.28.4",
+    "mocha": "^3.4.2",
+    "style-loader": "^0.18.2",
     "webpack": "^3.4.1",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-dev-server": "^2.6.1",
     "webpack-hot-middleware": "^2.18.2"
+  },
+  "devDependencies": {
+    "normalize.css": "^7.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
   }
 }

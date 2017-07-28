@@ -23,15 +23,17 @@ class Game {
         return this._history.length;
     }
 
+
     get trace() {
         return this._history.map(item => {
-            return item
+            return item;
         });
     }
 
     constructor(player, player2) {
         this._players = [player, player2];
         this._history = [];
+        this._revokedHistory = [];
         this._status = 0;
     }
 
@@ -60,6 +62,7 @@ class Game {
     _start() {
         this._status = 1;
         this.board = new Board(this.boardSize);
+        
     }
 
     // 让棋
@@ -70,7 +73,14 @@ class Game {
     // 悔棋
     revoked() {
         let last = this._history.pop();
-        this.board.put(last);
+        this._revokedHistory.push(last);
+        this.board.putPiece(last);
+    }
+
+    cancelRevoked() {
+        let last = this._revokedHistory.pop();
+        this._history.push(last);
+        this.board.putPiece(last, last.value);
     }
 
     put(x, y, player) {
@@ -80,7 +90,7 @@ class Game {
             y,
             value: value
         });
-        this.board.put({
+        this.board.putPiece({
             x,
             y
         }, this.getPlayerValue(player));
@@ -94,7 +104,7 @@ class Game {
 
     isFinish() {
         let last = this._history[this._history.length - 1];
-        const fiveRow = new FiveRow(last, this.board);
+        // const fiveRow = new FiveRow(last, this.board);
         let list = [
             [ // top & bottom vertical  line
                 [0, 1],
@@ -135,7 +145,7 @@ class Game {
         if (!win) {
             // draw
             if (Math.pow(this.boardSize) === this._history.length) {
-                return ;
+                return;
             }
         }
     }

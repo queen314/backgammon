@@ -11,6 +11,7 @@ class Player {
     constructor(userInfo) {
         this.userInfo = userInfo;
     }
+    
     click(x, y) {
         this._game.set({ x, y }, this);
     }

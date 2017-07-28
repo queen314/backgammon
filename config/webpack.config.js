@@ -18,7 +18,7 @@ const assets = 'assets';
 
 module.exports = {
     entry: {
-        'client': [path.join(ROOT_PATH, 'src/client.js')]
+        'client': [path.join(ROOT_PATH, 'src/js/client.js')]
     },
     devServer: {
         inline: true,
@@ -34,8 +34,8 @@ module.exports = {
     },
     module: {
         loaders: [{
-            test: /\.css$/,
-            loader: "style-loader!css-loader"
+            test: /\.(css|styl)$/,
+            loader: "style-loader!css-loader!stylus-loader"
         }]
     },
     devtool: '#source-map',

@@ -1,0 +1,45 @@
+@import "./mixin"
+$lineColor= #000;
+#playboard
+    height: $size=500px;
+    width: $size;
+    // padding: 15px;
+    border: 2px solid $lineColor;
+    margin: auto;
+    .axis-container
+        clearfix()
+        .axis-item
+            float: left;
+            width: $ceilSize = $size * $ceil ;
+            height: $ceilSize;
+            position: relative;
+            cursor: pointer;
+            &:hover:before
+                content: "✠";
+                display: table-cell;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: $iconSize=$ceilSize * 0.7;
+                line-height: $iconSize;
+                width: $iconSize;
+                margin: auto;
+                font-size: $iconSize * 1.25;
+                text-align: center;
+                color: red;
+            &:after
+                content: " ";
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                border: 1px solid $lineColor;
+                border-bottom: 0;
+                border-right: 0;
+                bottom: -50%;
+                right: -50%;
+            &-right:after
+                border-top: 0;
+            &-bottom:after
+                border-left: 0;
