@@ -1,3 +1,9 @@
+/**
+* 
+* @author  YernSun<yernsun@gmail.com>
+* @file    webpack.config.js
+* @version 1.0
+*/
 
 const path = require('path');
 
@@ -12,9 +18,14 @@ const assets = 'assets';
 
 module.exports = {
     entry: {
-        'client': [path.join(ROOT_PATH, 'src/client.js'), ]
+        'client': [path.join(ROOT_PATH, 'src/client.js')]
     },
-    devServer: { inline: true },
+    devServer: {
+        inline: true,
+        disableHostCheck: true,
+        hot: true,
+        publicPath: "/assets/"
+    },
     output: {
         path: path.join(ROOT_PATH, `./dist/${assets}`),
         filename: '[name].bundle.js',
@@ -22,9 +33,10 @@ module.exports = {
         chunkFilename: '[id].chunk.js'
     },
     module: {
-        loaders: [
-            { test: /\.css$/, loader: "style-loader!css-loader" }
-        ]
+        loaders: [{
+            test: /\.css$/,
+            loader: "style-loader!css-loader"
+        }]
     },
     devtool: '#source-map',
     plugins: [

@@ -1,3 +1,10 @@
+/**
+ * 
+ * @author  YernSun<yernsun@gmail.com>
+ * @file    board.js
+ * @version 1.0
+ */
+
 
 const config = require('../config')();
 
@@ -12,15 +19,10 @@ class Board {
     //     return map;
     // }
     constructor() {
-        this._layout = [];
+
         this._history = [];
         this._players = [];
-        for (let i = 0; i < chessboardSize; i++) {
-            this._layout[i] = [];
-            for (let j = 0; j < chessboardSize; j++) {
-                this._layout[i][j] = 0;
-            }
-        }
+        this._initLayout();
     }
 
 
@@ -39,30 +41,38 @@ class Board {
     //     return true;
     // }
 
-    put({ x, y }, value) {
-        if (this._layout[i][j]) {
+    put({
+        x,
+        y
+    }, value = 0) {
+        // 已经落子，且非悔棋撤销
+        if (this._layout[x][y] && value !== 0) {
             return false;
-        }
-        else{
-            this._layout[i][j] = value;
+        } else {
+            this._layout[x][y] = value;
             return true;
         }
+    }
+
+    get(x, y) {
+        if (typeof x === 'object' ) {
+            y = x.y;
+            x = x.x;
+        }
+        return this._layout[x][y];
     }
     // set({ x, y }, player) {
     //     let playerIndex = this._players.indexOf(player);
     // }
 
     _initLayout() {
-
-    }
-    // 复盘
-    load() {
-
-    }
-    // 结束算法
-    isFinish() {
-
-
+        this._layout = [];
+        for (let i = 0; i < chessboardSize; i++) {
+            this._layout[i] = [];
+            for (let j = 0; j < chessboardSize; j++) {
+                this._layout[i][j] = 0;
+            }
+        }
     }
 
     toString() {

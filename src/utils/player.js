@@ -1,9 +1,10 @@
 /**
- * 
- * @authors  YernSun(yernsun@gmail.com)
- * @date    2017-07-27 23:36:26
- * @version 
- */
+* 
+* @author  YernSun<yernsun@gmail.com>
+* @file    player.js
+* @version 1.0
+*/
+
 
 class Player {
 
