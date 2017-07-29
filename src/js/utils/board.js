@@ -7,7 +7,6 @@
 
 const size = 15;
 
-
 class Board {
     get size() {
         return size;
@@ -49,18 +48,6 @@ class Board {
             }
         }
     }
-
-    // toString() {
-    //     let rs = [];
-    //     for (let i = 0; i < this.size; i++) {
-    //         let line = [];
-    //         for (let j = 0; j < this.size; j++) {
-    //             line.push(map[this._layout[i][j]]);
-    //         }
-    //         rs.push(line.join(' '));
-    //     }
-    //     return rs.join('\n');
-    // }
 };
 
 function notEmpty(value) {

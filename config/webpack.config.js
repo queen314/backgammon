@@ -33,10 +33,15 @@ module.exports = {
         chunkFilename: '[id].chunk.js'
     },
     module: {
-        loaders: [{
-            test: /\.(css|styl)$/,
-            loader: "style-loader!css-loader!stylus-loader"
-        }]
+        loaders: [
+            {
+                test: /\.(css|styl)$/,
+                loader: "style-loader!css-loader!stylus-loader"
+            }, {
+                test: /\.(png|jpg)$/,
+                loader: 'url-loader?limit=8192'
+            }
+        ]
     },
     devtool: '#source-map',
     plugins: [

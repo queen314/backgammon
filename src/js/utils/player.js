@@ -20,9 +20,6 @@ class Player {
         this._game = game;
     }
 
-    toString() {
-
-    }
     valueOf() {
 
     }

@@ -1,4 +1,9 @@
-// const 
+/**
+* client of game
+* @author  YernSun<yernsun@gmail.com>
+* @file    client.js
+* @version 1.0
+*/
 
 require('normalize.css');
 require('../css/style.styl');
@@ -8,14 +13,49 @@ const ChessGame = require('./utils/game');
 
 const Player = require('./utils/player');
 
-const {Dom} = require('./utils/render');
+const { Dom, Canvas } = require('./utils/render');
 
 
 class Client {
-    put(){
+
+    async connect(server) {
+        let gameList = await server.list();
 
     }
+
+    async join(game) {
+        if (!game instanceof ChessGame) {
+            this.game = new ChessGame();
+            this.game.load(game);
+        }
+        else {
+            this.game = game;
+        }
+        Promise.resolve(this.game);
+    }
+
+    async put() {
+        if (await this.canPick()) {
+
+        }
+    }
+
+    /**
+     * check that if it can pick piece,
+     * it would be async method on future to support online game
+     */
+    canPick() {
+        return Promise.resolve(true);
+    }
 }
+
+class Online extends Client {
+}
+
+class Offline extends Client {
+
+}
+
 
 
 const player1 = new Player();
@@ -25,8 +65,12 @@ const game = new ChessGame(player1, player2);
 
 game.start();
 
-domRender = new Dom('#playboard',game.board);
-
+// domRender = new Dom('#playboard', game.board);
+domRender = new Canvas('#playboard', game.board)
+console.log(domRender);
+domRender.on('pick', axis => {
+    console.log(axis);
+});
 console.log(domRender);
 
 // // console.log(ChessGame.prototype);

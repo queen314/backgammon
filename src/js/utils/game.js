@@ -62,7 +62,7 @@ class Game {
     _start() {
         this._status = 1;
         this.board = new Board(this.boardSize);
-        
+
     }
 
     // 让棋
@@ -77,6 +77,7 @@ class Game {
         this.board.putPiece(last);
     }
 
+    // 撤销悔棋
     cancelRevoked() {
         let last = this._revokedHistory.pop();
         this._history.push(last);
@@ -90,10 +91,7 @@ class Game {
             y,
             value: value
         });
-        this.board.putPiece({
-            x,
-            y
-        }, this.getPlayerValue(player));
+        this.board.putPiece({ x, y }, this.getPlayerValue(player));
     }
 
 
@@ -123,14 +121,19 @@ class Game {
                 [-1, 1]
             ]
         ];
+        
+        let winLine = [];
         let win = list.some(line => {
             let current = last;
             let lineCounter = 0;
+            winLine = [];
             // calc the sum of same color pieces in single line
             line.forEach(([mx, my]) => {
                 let x = current.x,
                     y = current.y;
                 let counter = -1;
+                
+
                 do {
                     x += mx;
                     y += my;
@@ -145,7 +148,7 @@ class Game {
         if (!win) {
             // draw
             if (Math.pow(this.boardSize) === this._history.length) {
-                return;
+                return ;
             }
         }
     }
