@@ -121,7 +121,7 @@ class Game {
                 [-1, 1]
             ]
         ];
-        
+
         let winLine = [];
         let win = list.some(line => {
             let current = last;
@@ -132,7 +132,6 @@ class Game {
                 let x = current.x,
                     y = current.y;
                 let counter = -1;
-                
 
                 do {
                     x += mx;
@@ -148,7 +147,7 @@ class Game {
         if (!win) {
             // draw
             if (Math.pow(this.boardSize) === this._history.length) {
-                return ;
+                return;
             }
         }
     }
@@ -164,3 +163,9 @@ class Game {
 
 
 module.exports = Game;
+
+
+
+// class Game extends require('events'){
+
+// }

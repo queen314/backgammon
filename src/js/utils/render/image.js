@@ -8,8 +8,8 @@
 let white = document.createElement('img');
 
 let black = document.createElement('img');
-white.src = require('../../../images/black.png');
-black.src = require('../../../images/white.png');
+white.src = require('../../../images/white.png');
+black.src = require('../../../images/black.png');
 module.exports = {
     white,
     black

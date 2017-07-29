@@ -7,7 +7,11 @@
 
 
 // todo
-class Server {
+class Server extends require('events'){
+
+    load(history) {
+
+    }
 
     async list(){
 
