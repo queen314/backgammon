@@ -1,9 +1,17 @@
 # backgammon 
 
 ## install
+>npm
+
+
 ```shell
 npm install #npm
 #yarn #yarn
+```
+> yarn
+
+```shell
+yarn #yarn
 ```
 
 ## run
