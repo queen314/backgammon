@@ -40,6 +40,12 @@ module.exports = {
             }, {
                 test: /\.(png|jpg)$/,
                 loader: 'url-loader?limit=8192'
+            }, {
+                test: /.+js$/i,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015']
+                }
             }
         ]
     },
