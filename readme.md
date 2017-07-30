@@ -10,5 +10,5 @@ npm install #npm
 ```
 npm run dev
 ```
-while the server started ,you can lanch you browser with localhost:8080
+you can lanch you browser with localhost:8080 when the server has been started.
 
