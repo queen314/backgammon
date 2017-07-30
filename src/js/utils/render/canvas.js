@@ -10,7 +10,7 @@ const piece = require('./image');
 
 class Canvas extends require('./base') {
 
-    clear() {
+    _clear() {
         this.container.classList.add('canvas-container');
 
         const size = this.size;
@@ -37,32 +37,57 @@ class Canvas extends require('./base') {
             ctx.moveTo(x * space + margin, margin);
             ctx.lineTo(x * space + margin, width - margin);
         }
-
+        ctx.save();
         ctx.stroke();
         this.canvasCtx = ctx;
-        this.history.clear();
+
     }
 
 
-    draw(x, y) {
+    _draw(x, y) {
         const size = 2 * this.space;
+
         x = x * size;
         y = y * size;
+
         let undo = [this.canvasCtx.getImageData(x, y, size, size), x, y];
         let image = this.history.length % 2 ? piece.white : piece.black;
         this.canvasCtx.drawImage(image, x, y, size, size);
-        this.history.push({ undo, redo: [this.canvasCtx.getImageData(x, y, size, size), x, y] });
+        let redo = [this.canvasCtx.getImageData(x, y, size, size), x, y];
+        
+        this.history.push({ undo, redo });
+        this._setLastHand(x, y);
+    }
 
+    _setLastHand() {
+        let last = this.history.get(this.history.length-2);
+        let ctx = this.canvasCtx;
+        const [_,x,y] = this.history.last.redo;
+        const fillSize = 10;
+        if (last) {
+            ctx.putImageData(...last.redo);
+            console.log(last.redo[1]/this.space/2,last.redo[2]/this.space/2);
+        }
+
+       
+        ctx.fillStyle = 'red';
+        ctx.fillRect(x + this.space - fillSize / 2, y + this.space - fillSize / 2, fillSize, fillSize);
     }
 
     undo() {
         let last = this.history.undo();
         this.canvasCtx.putImageData(...last.undo);
+        this._setLastHand();
+
     }
 
     redo() {
-        let last = this.history.redo();
-        this.canvasCtx.putImageData(...last.redo);
+        let last = this.history.last;
+        let current = this.history.redo();
+        this.canvasCtx.putImageData(...current.redo);
+        // let [_, x, y] = current.undo;
+        this._setLastHand();
+        
     }
 
     _initEvent() {
@@ -126,6 +151,7 @@ class Canvas extends require('./base') {
             y: parseInt(y / this.space)
         };
     }
+
 }
 
 module.exports = Canvas;

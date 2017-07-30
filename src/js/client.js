@@ -17,9 +17,13 @@ const ChessGame = require('./utils/offlineGame');
 
 
 new ChessGame().config({
-    playboard:'#playboard',
+    playboard: '#playboard',
     gameinfo: '#gameinfo'
-}).on('finish',e=>{
-    // alert(1);
-
+}).switchRender().on('finish', info => {
+    if (info) {
+        toast({ 1: '黑', 2: '白' }[info.player] + '棋赢')
+    }
+    else {
+        toast('平局');
+    }
 });

@@ -16,7 +16,6 @@ class Board {
     }
 
     putPiece({ x, y }, value = 0) {
-        console.log(value);
         // 已经落子，且非悔棋撤销
         if (this.get(x, y) !== 0 && notEmpty(value) && value !== 0) {
             return false;

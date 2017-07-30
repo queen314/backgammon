@@ -55,6 +55,10 @@ class History {
         this._history = [];
         this._cancelHistory = [];
     }
+
+    get(index){
+        return this._history[index];
+    }
 }
 
 module.exports = History;

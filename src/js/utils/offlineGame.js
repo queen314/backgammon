@@ -55,6 +55,7 @@ class OfflineGame extends require('events') {
         this.$playboard = document.querySelector(playboard);
         this._initEvent();
         this.switchRender();
+        this._finishCheck();
         return this;
     }
 
@@ -79,6 +80,9 @@ class OfflineGame extends require('events') {
 
     _finishCheck() {
         const last = this.history.last;
+        if (!last){
+            return;
+        }
         let list = [
             [ // top & bottom vertical  line
                 [0, 1],
@@ -146,7 +150,7 @@ class OfflineGame extends require('events') {
             }
         });
         this.on('start', () => {
-            this._render.clear();
+            this.render.clear();
             this._history.clear();
             this.board.clear();
         }).on('redo', () => {
@@ -168,14 +172,10 @@ class OfflineGame extends require('events') {
             }
         }).on('switchRender', () => {
             this.switchRender();
+
         }).on('finish', info => {
-            // this.$gameinfo
             if (info) {
                 this.render.winLine = info.winLine;
-                toast({ 1: '黑', 2: '白' }[info.player] + '棋赢')
-            }
-            else {
-                toast('平局');
             }
 
         });

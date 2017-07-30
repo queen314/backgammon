@@ -23,8 +23,8 @@ class Dom extends Render {
             })
         }
     }
-    clear() {
-        this._history.clear();
+
+    _clear() {
         const size = this.size;
         const doms = [];
         for (let y = 0; y < size; y++) {
@@ -39,9 +39,11 @@ class Dom extends Render {
         // listContainer.innerHTML = doms.join('');
 
         this.container.innerHTML = `<div class="${prefix}-container">${doms.join('')}</div>`;
+        
+       
     }
 
-    draw(x, y) {
+    _draw(x, y) {
         const el = this._getElement(x, y);
         el.setAttribute('player', this.player);
         this._setLastHand(x,y);
@@ -60,6 +62,7 @@ class Dom extends Render {
     _getElement(x, y) {
         return document.getElementById(`${prefix}-${x}-${y}`);
     }
+    
     undo() {
         let last = this.history.undo();
         this._getElement(last.x, last.y).removeAttribute('player');
@@ -73,11 +76,12 @@ class Dom extends Render {
     redo() {
         let last = this.history.redo();
         this._getElement(last.x, last.y).setAttribute('player', last.value);
+        this._setLastHand(last.x,last.y);
     }
 
     _initEvent() {
         this._domEvents.push([
-            this.container.querySelector('.axis-container'),
+            this.container,
             'click', e => {
                 let currentPlayer = this.player;
                 const el = e.target;

@@ -69,21 +69,31 @@ class Render extends EventEmiter {
         });
     }
 
-    set(x, y) {
+    /**
+     * interface
+     */
+    _clear() {
+
     }
 
     clear() {
+        this._disableEvents = false;
+        this._history.clear();
+        this._clear();
+    }
+
+
+    /**
+     * interface
+     * @param {number} x 
+     * @param {number} y 
+     */
+    _draw(x, y) {
 
     }
-    click(pos, type) {
-        // 操作
-        if (type) {
 
-        }
-        // 取消操作
-        else {
-
-        }
+    draw(x, y) {
+        this._draw(x, y);
     }
 
     disableEvents(status) {
