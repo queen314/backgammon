@@ -11,6 +11,7 @@ const Board = require('./board');
 
 const render = require('./render');
 
+const toast = require('./toast');
 
 class OfflineGame extends require('events') {
 
@@ -59,16 +60,17 @@ class OfflineGame extends require('events') {
 
     switchRender() {
         const Render = this._render instanceof render.Dom ? render.Canvas : render.Dom;
+        this._render && this._render.destroy();
         this._render = new Render(this.$playboard, this.board);
 
-        document.querySelector('[event="switchRender"]').setAttribute('render',this.renderEngine);
+        document.querySelector('[event="switchRender"]').setAttribute('render', this.renderEngine);
 
         this._render.on('pick', ({ x, y }, player) => {
-            console.log(`${this.history.length+1} hand ${{ 1: 'black', 2: 'white' }[player]} put on `, x, y);
+            console.log(`${this.history.length + 1} hand ${{ 1: 'black', 2: 'white' }[player]} put on `, x, y);
             this.history.push({ x, y, value: player });
+            this.board.putPiece(this.history.last, player);
             this._finishCheck();
         });
-
         this.history.trace.forEach(({ x, y }) => {
             this._render.draw(x, y);
         });
@@ -112,13 +114,14 @@ class OfflineGame extends require('events') {
                     y += my;
                     var value = this.board.get(x, y);
                     ++counter;
+
                 }
                 while (value === current.value && counter < this.winSize && winLine.push({ x, y }));
                 lineCounter += counter;
             });
-
             return lineCounter == this.winSize - 1;
         });
+        this.render.disableEvents(win);
         if (!win) {
             // draw
             if (Math.pow(this.boardSize) === this._history.length) {
@@ -127,8 +130,9 @@ class OfflineGame extends require('events') {
         }
         else {
             this.emit('finish', {
-                pieces: winLine,
-                player: last.value
+                winLine,
+                player: last.value,
+                last
             });
         }
 
@@ -144,31 +148,37 @@ class OfflineGame extends require('events') {
         this.on('start', () => {
             this._render.clear();
             this._history.clear();
-        });
-        this.on('redo', () => {
+            this.board.clear();
+        }).on('redo', () => {
             if (this.history.cancelLength) {
                 let last = this.history.redo();
                 this.board.putPiece(last, last.value);
                 this.render.redo();
+                // redo should check the status
+                this._finishCheck();
             }
 
-        });
-
-        this.on('undo', () => {
+        }).on('undo', () => {
             if (this.history.length) {
                 let last = this.history.undo();
                 this.board.putPiece(last, 0);
                 this.render.undo();
+                // undo means that the game is not finish
+                this.render.disableEvents(false);
             }
-        });
-
-        this.on('switchRender', () => {
+        }).on('switchRender', () => {
             this.switchRender();
-        });
+        }).on('finish', info => {
+            // this.$gameinfo
+            if (info) {
+                this.render.winLine = info.winLine;
+                toast({ 1: '黑', 2: '白' }[info.player] + '棋赢')
+            }
+            else {
+                toast('平局');
+            }
 
-        this.on('finish',info=>{
-            alert(JSON.stringify(info));
-        })
+        });
     }
     // clear() {
     //     this._render.clear();

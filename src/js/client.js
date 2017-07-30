@@ -8,8 +8,11 @@
 require('normalize.css');
 require('../css/style.styl');
 
+const toast = require('./utils/toast');
 
 const ChessGame = require('./utils/offlineGame');
+
+
 
 
 
@@ -17,5 +20,6 @@ new ChessGame().config({
     playboard:'#playboard',
     gameinfo: '#gameinfo'
 }).on('finish',e=>{
-    console.log(e);
+    // alert(1);
+
 });

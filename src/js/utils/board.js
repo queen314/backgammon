@@ -12,10 +12,11 @@ class Board {
         return size;
     }
     constructor() {
-        this._initLayout();
+        this.clear();
     }
 
     putPiece({ x, y }, value = 0) {
+        console.log(value);
         // 已经落子，且非悔棋撤销
         if (this.get(x, y) !== 0 && notEmpty(value) && value !== 0) {
             return false;
@@ -38,7 +39,7 @@ class Board {
         }
     }
 
-    _initLayout() {
+    clear() {
         this._layout = [];
         const size = this.size;
         for (let i = 0; i < size; i++) {

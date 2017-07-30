@@ -1,5 +1,6 @@
 @import "./mixin"
 $lineColor= #000;
+$highlight = red;
 #playboard
     height: $size=510px;
     width: $size;
@@ -17,20 +18,16 @@ $lineColor= #000;
             cursor: pointer;
             background: no-repeat center center;
             &:hover:before
+                fillparent()
                 content: "✠";
                 display: table-cell;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
                 height: $iconSize=$ceilSize * 0.7;
                 line-height: $iconSize;
                 width: $iconSize;
                 margin: auto;
                 font-size: $iconSize * 1.25;
                 text-align: center;
-                color: red;
+                color: $highlight;
             &:after
                 content: " ";
                 position: absolute;
@@ -61,6 +58,22 @@ $lineColor= #000;
                 background-image: url("../images/black.png");
             &[player="2"]
                 background-image: url("../images/white.png");
+        .last-hand
+        .win-line
+            &>i
+                fillparent()
+                z-index: 1;
+                text-align: center;
+                height: 12px;
+                width: 12px;
+                line-height: 12px;
+                color: $highlight;
+                font-style: normal;
+                animation: flashing 0.5s infinite;
+                &:before
+                    content: "▪";
+        .win-line>i
+            transform: rotate(45deg);
     // for canvas
     canvas
         width: 100%;
@@ -73,6 +86,6 @@ $lineColor= #000;
         height: $ceilSize ;
         line-height: $ceilSize ;
         text-align: center;
-        color: red;
+        color: $highlight;
         &:before
             content: "✠";

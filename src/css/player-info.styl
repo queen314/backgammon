@@ -17,12 +17,15 @@
         cursor: pointer;
         color: #999;
         display: inline-block;
+        min-width: 5em;
         &:not([disabled]):hover
             color: #666;
         &[disabled]
             cursor: not-allowed;
+        &.full-btn
+            width: 100%;
     .info-group + .info-group
         margin-top: 20px;
     [render]:after
-        content: attr(render);
+        content: '(当前' attr(render) ')';
         display: inline;

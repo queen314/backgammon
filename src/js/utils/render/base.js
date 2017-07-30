@@ -17,7 +17,7 @@ const History = require('../history');
 
 // 渲染引擎
 class Render extends EventEmiter {
-    static get prefix(){
+    static get prefix() {
         return prefix;
     }
     static get size() {
@@ -31,27 +31,42 @@ class Render extends EventEmiter {
         return;
     }
 
-    get history (){
+    get history() {
         return this._history;
     }
 
-    get player(){
+    get player() {
         return this._history.length % 2 + 1;
     }
+
+    // set winLine(value){
+    //     if (winLine) {
+
+    //     }
+    // }
 
     constructor(container, board) {
         super();
         this._board = board;
         this._history = new History;
+        this._domEvents = [];
         if (typeof container === 'string') {
             this.container = document.querySelector(container);
         }
-        else{
+        else {
             this.container = container;
         }
 
         this.clear();
         this._initEvent();
+
+        this._domEvents.forEach(([dom, event, listener]) => {
+            dom.addEventListener(event, (...arg) => {
+                if (!this._disableEvents) {
+                    listener(...arg);
+                }
+            }, true);
+        });
     }
 
     set(x, y) {
@@ -69,6 +84,18 @@ class Render extends EventEmiter {
         else {
 
         }
+    }
+
+    disableEvents(status) {
+        this._disableEvents = status;
+    }
+    /**
+     * destory and release the event resource
+     */
+    destroy() {
+        this._domEvents.forEach(([dom, ...args]) => {
+            dom.removeEventListener && dom.removeEventListener(...args);
+        })
     }
 }
 

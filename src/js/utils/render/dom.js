@@ -7,6 +7,22 @@
 const Render = require('./base')
 const prefix = Render.prefix;
 class Dom extends Render {
+
+
+    set winLine(value) {
+        const className = 'win-line';
+        if (value && value.length) {
+            
+            value.forEach(({ x, y }) => {
+                this._getElement(x, y).classList.add(className);
+            });
+        }
+        else {
+            document.querySelectorAll(`.${className}`).forEach(el => {
+                el.classList.remove(className);
+            })
+        }
+    }
     clear() {
         this._history.clear();
         const size = this.size;
@@ -15,7 +31,7 @@ class Dom extends Render {
             let className = y === size - 1 ? `${prefix}-item-bottom` : '';
             for (let x = 0; x < size; x++) {
                 className = x === size - 1 ? `${prefix}-item-right ${className}` : className;
-                doms.push(`<div class="${prefix}-item ${className}" id="axis-${x}-${y}"></div>`);
+                doms.push(`<div class="${prefix}-item ${className}" id="axis-${x}-${y}"><i></i></div>`);
             }
         }
         this.container.className = '';
@@ -26,41 +42,58 @@ class Dom extends Render {
     }
 
     draw(x, y) {
-        this._getElement(x,y).setAttribute('player', this.player);
-        this.history.push({ x, y ,value: this.player});
+        const el = this._getElement(x, y);
+        el.setAttribute('player', this.player);
+        this._setLastHand(x,y);
+        this.history.push({ x, y, value: this.player });
     }
 
+    _setLastHand(x,y){
+        const lastHand = 'last-hand';
+        let last = this.container.querySelector(`.${lastHand}`);
+        if (last) {
+            last.classList.remove(lastHand);
+        }
+        this._getElement(x,y).classList.add(lastHand);
+    }
+    
     _getElement(x, y) {
         return document.getElementById(`${prefix}-${x}-${y}`);
     }
     undo() {
         let last = this.history.undo();
-        this._getElement(last.x,last.y).removeAttribute('player');
-
+        this._getElement(last.x, last.y).removeAttribute('player');
+        let current = this.history.last;
+        if (current){
+            this._setLastHand(current.x,current.y);
+        }
+        this.winLine = [];
     }
 
     redo() {
         let last = this.history.redo();
-        this._getElement(last.x,last.y).setAttribute('player',last.value);
+        this._getElement(last.x, last.y).setAttribute('player', last.value);
     }
 
     _initEvent() {
-        this.container.querySelector('.axis-container').addEventListener('click', e => {
-            let currentPlayer = this.player;
-            const el = e.target;
-            if (el.getAttribute('player')) {
-                return;
-            }
-            let match = String(e.target.id).match(new RegExp(`^${prefix}-(\\d+)-(\\d+)$`));
-            if (match) {
-                let [_, x, y] = match.map(item => Number(item));
+        this._domEvents.push([
+            this.container.querySelector('.axis-container'),
+            'click', e => {
+                let currentPlayer = this.player;
+                const el = e.target;
+                if (el.getAttribute('player')) {
+                    return;
+                }
+                let match = String(e.target.id).match(new RegExp(`^${prefix}-(\\d+)-(\\d+)$`));
 
-                this.emit('pick', { x, y }, this.player);
-                this.draw(x, y);
-                
-                
+                if (match) {
+                    let [_, x, y] = match.map(item => Number(item));
+
+                    this.emit('pick', { x, y }, this.player);
+                    this.draw(x, y);
+                }
             }
-        });
+        ]);
     }
 
 }
