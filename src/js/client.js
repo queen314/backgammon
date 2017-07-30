@@ -28,4 +28,12 @@ new ChessGame().config({
     }
 }).on('pick',({x,y,player,hand})=>{
       console.log(`${hand} hand ${{ 1: 'black', 2: 'white' }[player]} put on `, x, y);
+      document.querySelector('.hand-info').innerHTML = 
+      `第${hand}手 ${{ 1: '黑', 2: '白' }[player]} ${x}-${y}`;
+}).on('redo',()=>{
+    document.querySelector('.hand-info').innerHTML = 
+      `取消悔棋`;
+}).on('undo',()=>{
+    document.querySelector('.hand-info').innerHTML = 
+      `悔棋`;
 });

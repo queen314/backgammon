@@ -12,9 +12,8 @@ class Canvas extends require('./base') {
 
     _clear() {
         this.container.classList.add('canvas-container');
-
         const size = this.size;
-        this.width = this.container.offsetWidth;
+        this.width = this.container.offsetWidth-4;
         // scale 2.0 to avoid line vague
         const width = this.width * 2;
         const space = ~~(width / size);
