@@ -8,7 +8,7 @@
 */
 
 const assert = require('assert');
-const Board = require('../src/utils/board');
+const Board = require('../src/js/utils/board');
 
 describe('board', function () {
     const board = new Board();

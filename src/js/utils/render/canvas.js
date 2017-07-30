@@ -124,28 +124,6 @@ class Canvas extends require('./base') {
             }
         );
 
-        // this.container.addEventListener('click', e => {
-        //     if (e.target === this.canvas) {
-        //         let offset = this._getOffset(e.layerX, e.layerY);
-        //         if (this._board.get(offset) === 0) {
-        //             this.emit('pick', offset, this.player);
-        //             this.draw(offset.x, offset.y);
-        //         }
-
-        //     }
-        // });
-        // change mouse cursor type
-        // this.container.addEventListener('mousemove', e => {
-        //     let offset = this._getOffset(e.layerX, e.layerY);
-        //     if (this._board.get(offset) === 0) {
-        //         e.target.style.cursor = 'pointer';
-        //         // this.container.querySelector('.pointer').style.left = offset.x * this.space + 'px';
-        //         // this.container.querySelector('.pointer').style.top = offset.y * this.space + 'px';
-        //     }
-        //     else {
-        //         e.target.style.cursor = 'not-allowed';
-        //     }
-        // });
     }
 
     _getOffset(x, y) {
