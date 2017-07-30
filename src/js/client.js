@@ -19,11 +19,13 @@ const ChessGame = require('./utils/offlineGame');
 new ChessGame().config({
     playboard: '#playboard',
     gameinfo: '#gameinfo'
-}).switchRender().on('finish', info => {
+}).switchRender().switchRender().switchRender().switchRender().on('finish', info => {
     if (info) {
         toast({ 1: '黑', 2: '白' }[info.player] + '棋赢')
     }
     else {
         toast('平局');
     }
+}).on('pick',({x,y,player,hand})=>{
+      console.log(`${hand} hand ${{ 1: 'black', 2: 'white' }[player]} put on `, x, y);
 });

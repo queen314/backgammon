@@ -67,22 +67,27 @@ class OfflineGame extends require('events') {
         document.querySelector('[event="switchRender"]').setAttribute('render', this.renderEngine);
 
         this._render.on('pick', ({ x, y }, player) => {
-            console.log(`${this.history.length + 1} hand ${{ 1: 'black', 2: 'white' }[player]} put on `, x, y);
             this.history.push({ x, y, value: player });
+
+            this.emit('pick',{x,y,player,hand:this.history.length})
             this.board.putPiece(this.history.last, player);
             this._finishCheck();
         });
+         
         this.history.trace.forEach(({ x, y }) => {
             this._render.draw(x, y);
         });
+        this._finishCheck();
         return this;
     }
 
     _finishCheck() {
         const last = this.history.last;
         if (!last){
+            
             return;
         }
+      
         let list = [
             [ // top & bottom vertical  line
                 [0, 1],
@@ -123,9 +128,9 @@ class OfflineGame extends require('events') {
                 while (value === current.value && counter < this.winSize && winLine.push({ x, y }));
                 lineCounter += counter;
             });
-            return lineCounter == this.winSize - 1;
+            return lineCounter >= this.winSize - 1;
         });
-        this.render.disableEvents(win);
+        
         if (!win) {
             // draw
             if (Math.pow(this.boardSize) === this._history.length) {
@@ -133,6 +138,7 @@ class OfflineGame extends require('events') {
             }
         }
         else {
+            this.render.disableEvents(win);
             this.emit('finish', {
                 winLine,
                 player: last.value,

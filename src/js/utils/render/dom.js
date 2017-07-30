@@ -12,7 +12,7 @@ class Dom extends Render {
     set winLine(value) {
         const className = 'win-line';
         if (value && value.length) {
-            
+
             value.forEach(({ x, y }) => {
                 this._getElement(x, y).classList.add(className);
             });
@@ -39,36 +39,36 @@ class Dom extends Render {
         // listContainer.innerHTML = doms.join('');
 
         this.container.innerHTML = `<div class="${prefix}-container">${doms.join('')}</div>`;
-        
-       
+
+
     }
 
     _draw(x, y) {
         const el = this._getElement(x, y);
         el.setAttribute('player', this.player);
-        this._setLastHand(x,y);
+        this._setLastHand(x, y);
         this.history.push({ x, y, value: this.player });
     }
 
-    _setLastHand(x,y){
+    _setLastHand(x, y) {
         const lastHand = 'last-hand';
         let last = this.container.querySelector(`.${lastHand}`);
         if (last) {
             last.classList.remove(lastHand);
         }
-        this._getElement(x,y).classList.add(lastHand);
+        this._getElement(x, y).classList.add(lastHand);
     }
-    
+
     _getElement(x, y) {
         return document.getElementById(`${prefix}-${x}-${y}`);
     }
-    
+
     undo() {
         let last = this.history.undo();
         this._getElement(last.x, last.y).removeAttribute('player');
         let current = this.history.last;
-        if (current){
-            this._setLastHand(current.x,current.y);
+        if (current) {
+            this._setLastHand(current.x, current.y);
         }
         this.winLine = [];
     }
@@ -76,14 +76,13 @@ class Dom extends Render {
     redo() {
         let last = this.history.redo();
         this._getElement(last.x, last.y).setAttribute('player', last.value);
-        this._setLastHand(last.x,last.y);
+        this._setLastHand(last.x, last.y);
     }
 
     _initEvent() {
-        this._domEvents.push([
+        this._addDomEvent(
             this.container,
             'click', e => {
-                let currentPlayer = this.player;
                 const el = e.target;
                 if (el.getAttribute('player')) {
                     return;
@@ -91,13 +90,14 @@ class Dom extends Render {
                 let match = String(e.target.id).match(new RegExp(`^${prefix}-(\\d+)-(\\d+)$`));
 
                 if (match) {
+                    
                     let [_, x, y] = match.map(item => Number(item));
-
                     this.emit('pick', { x, y }, this.player);
                     this.draw(x, y);
+
                 }
             }
-        ]);
+        );
     }
 
 }

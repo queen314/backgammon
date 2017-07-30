@@ -60,13 +60,27 @@ class Render extends EventEmiter {
         this.clear();
         this._initEvent();
 
-        this._domEvents.forEach(([dom, event, listener]) => {
-            dom.addEventListener(event, (...arg) => {
-                if (!this._disableEvents) {
-                    listener(...arg);
-                }
-            }, true);
-        });
+        // this._domEvents.forEach(([dom, event, listener], index) => {
+        //     this._domEvents[index][2] = (...args) => {
+        //         listener(...args);
+        //     }
+        //     dom.addEventListener(event, listener, true);
+        // });
+    }
+
+    _addDomEvent(dom, event, listener) {
+        let proxy = (...args) => {
+            if (!this._disableEvents) {
+                listener(...args);
+            }
+        };
+        this._domEvents.push([
+            this.container,
+            event,
+            proxy, true
+        ]);
+
+        dom.addEventListener(event, proxy, true);
     }
 
     /**
@@ -104,9 +118,9 @@ class Render extends EventEmiter {
      */
     destroy() {
         this._domEvents.forEach(([dom, ...args]) => {
+            args.push(true);
             dom.removeEventListener && dom.removeEventListener(...args);
         })
     }
 }
-
 module.exports = Render;

@@ -54,24 +54,28 @@ class Canvas extends require('./base') {
         let image = this.history.length % 2 ? piece.white : piece.black;
         this.canvasCtx.drawImage(image, x, y, size, size);
         let redo = [this.canvasCtx.getImageData(x, y, size, size), x, y];
-        
+
         this.history.push({ undo, redo });
         this._setLastHand(x, y);
     }
 
     _setLastHand() {
-        let last = this.history.get(this.history.length-2);
+        let last = this.history.get(this.history.length - 2);
         let ctx = this.canvasCtx;
-        const [_,x,y] = this.history.last.redo;
+        const current = this.history.last;
+
         const fillSize = 10;
         if (last) {
             ctx.putImageData(...last.redo);
-            console.log(last.redo[1]/this.space/2,last.redo[2]/this.space/2);
+            // console.log(last.redo[1] / this.space / 2, last.redo[2] / this.space / 2);
+        }
+        if (current) {
+            const [_, x, y] = current.redo;
+            ctx.fillStyle = 'red';
+            ctx.fillRect(x + this.space - fillSize / 2, y + this.space - fillSize / 2, fillSize, fillSize);
+
         }
 
-       
-        ctx.fillStyle = 'red';
-        ctx.fillRect(x + this.space - fillSize / 2, y + this.space - fillSize / 2, fillSize, fillSize);
     }
 
     undo() {
@@ -87,11 +91,11 @@ class Canvas extends require('./base') {
         this.canvasCtx.putImageData(...current.redo);
         // let [_, x, y] = current.undo;
         this._setLastHand();
-        
+
     }
 
     _initEvent() {
-        this._domEvents.push([
+        this._addDomEvent(
             this.container,
             'click',
             e => {
@@ -104,8 +108,8 @@ class Canvas extends require('./base') {
 
                 }
             }
-        ]);
-        this._domEvents.push([
+        );
+        this._addDomEvent(
             this.container,
             'mousemove',
             e => {
@@ -119,7 +123,7 @@ class Canvas extends require('./base') {
                     e.target.style.cursor = 'not-allowed';
                 }
             }
-        ]);
+        );
 
         // this.container.addEventListener('click', e => {
         //     if (e.target === this.canvas) {
