@@ -34,7 +34,11 @@ class Render extends EventEmiter {
     get history (){
         return this._history;
     }
-    
+
+    get player(){
+        return this._history.length % 2 + 1;
+    }
+
     constructor(container, board) {
         super();
         this._board = board;
@@ -42,8 +46,15 @@ class Render extends EventEmiter {
         if (typeof container === 'string') {
             this.container = document.querySelector(container);
         }
-        this._initEvent();
+        else{
+            this.container = container;
+        }
+
         this.clear();
+        this._initEvent();
+    }
+
+    set(x, y) {
     }
 
     clear() {

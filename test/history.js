@@ -1,21 +1,21 @@
 /**
-* test for game
+* test for history
 * @author  YernSun<yernsun@gmail.com>
-* @file    game.js
+* @file    history.js
 * @version 1.0
 */
 
 const assert = require('assert');
 
-const ChessGame = require('../src/js/utils/game');
+const ChessGame = require('../src/js/utils/history');
 
 
-describe('Game', function () {
+describe('History', function () {
     const board = new Board();
     const position = { x: 1, y: 1 };
     const positionValue = 2;
     // board
-    describe('#get', function () {
+    describe('#push', function () {
         it(`should be 0 if the position of ${JSON.stringify(position)} is not put piece`, function () {
             assert.equal(0, board.get(position));
         });

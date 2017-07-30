@@ -9,17 +9,20 @@
 const piece = require('./image');
 
 class Canvas extends require('./base') {
+
     clear() {
         this.container.classList.add('canvas-container');
-        this.canvas = document.createElement('canvas');
-        this.width = this.container.offsetWidth;
+
         const size = this.size;
+        this.width = this.container.offsetWidth;
         // scale 2.0 to avoid line vague
-        const width = this.canvas.height = this.canvas.width = this.width * 2;
-        // canvas.height = this.container.offsetHeight;
+        const width = this.width * 2;
         const space = ~~(width / size);
         this.space = ~~(space / 2);
-        this.container.appendChild(this.canvas);
+
+        this.container.innerHTML = `<canvas width="${width}" height="${width}"></canvas><div class="pointer"></div>`;
+        this.canvas = this.container.querySelector('canvas');
+
         let ctx = this.canvas.getContext('2d');
 
         const margin = ~~(space / 2);
@@ -40,36 +43,52 @@ class Canvas extends require('./base') {
         this.history.clear();
     }
 
-    _initLayout() {
 
-    }
-
-    set(x, y) {
+    draw(x, y) {
         const size = 2 * this.space;
         x = x * size;
         y = y * size;
-        this.history.push([this.canvasCtx.getImageData(x, y, size, size),x,y]);
-        let image = this.history.length % 2 ? piece.black : piece.white;
+        let undo = [this.canvasCtx.getImageData(x, y, size, size), x, y];
+        let image = this.history.length % 2 ? piece.white : piece.black;
         this.canvasCtx.drawImage(image, x, y, size, size);
+        this.history.push({ undo, redo: [this.canvasCtx.getImageData(x, y, size, size), x, y] });
+
     }
 
+    undo() {
+        let last = this.history.undo();
+        this.canvasCtx.putImageData(...last.undo);
+    }
 
+    redo() {
+        let last = this.history.redo();
+        this.canvasCtx.putImageData(...last.redo);
+    }
 
     _initEvent() {
-        let counter = 0;
         this.container.addEventListener('click', e => {
             if (e.target === this.canvas) {
                 let offset = this._getOffset(e.layerX, e.layerY);
-                this.emit('pick', offset);
-                this.set(offset.x, offset.y);
+                if (this._board.get(offset) === 0) {
+                    this.emit('pick', offset, this.player);
+                    this.draw(offset.x, offset.y);
+                }
+
             }
         });
+        // change mouse cursor type
         this.container.addEventListener('mousemove', e => {
-            e.target.style.cursor = 'pointer';
+            let offset = this._getOffset(e.layerX, e.layerY);
+            if (this._board.get(offset) === 0) {
+                e.target.style.cursor = 'pointer';
+                // this.container.querySelector('.pointer').style.left = offset.x * this.space + 'px';
+                // this.container.querySelector('.pointer').style.top = offset.y * this.space + 'px';
+            }
+            else {
+                e.target.style.cursor = 'not-allowed';
+            }
         });
     }
-
-
 
     _getOffset(x, y) {
         return {

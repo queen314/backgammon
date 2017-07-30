@@ -48,6 +48,9 @@ class Board {
             }
         }
     }
+    toString(){
+        return this._layout.map(item=>item.join('')).join('\n');
+    }
 };
 
 function notEmpty(value) {

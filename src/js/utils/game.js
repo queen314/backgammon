@@ -164,8 +164,3 @@ class Game {
 
 module.exports = Game;
 
-
-
-// class Game extends require('events'){
-
-// }

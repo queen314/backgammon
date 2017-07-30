@@ -7,17 +7,30 @@
 </head>
 
 <body>
-    <div class="wrap">
+    <div id="wrap" class="wrap">
         <div id="playboard">
 
         </div>
-        <div class="player-info">
-            <div>
-                黑<img src="/src/images/black.png">
-            <div>
-            <div>
-                白<img src="/src/images/white.png">
-            <div>
+        <div id="gameinfo">
+            <div class="player-info">
+                <div class="info-group game-info">
+                    当前步数：
+                </div>
+                <div class="info-group player-item">
+                    黑<img src="/src/images/black.png">
+                </div>
+                <div class="info-group player-item">
+                    白<img src="/src/images/white.png">
+                </div>
+                <div class="info-group">
+                    <button event="start">开始</button>
+                    <button event="switchRender">切换引擎</button>
+                </div>
+                <div class="info-group">
+                    <button event="undo">悔棋</button>
+                    <button event="redo">撤销悔棋</button>
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="/assets/client.bundle.js" charset="utf-8"></script>

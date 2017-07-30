@@ -10,15 +10,19 @@ class History {
      * last item of history
      */
     get last() {
-        return this._history.slice(-1);
+        return this._history.slice(-1)[0];
     }
 
     get trace() {
         return this._history.map(item => item);
     }
 
-    get length(){
+    get length() {
         return this._history.length;
+    }
+
+    get cancelLength(){
+        return this._cancelHistory.length;
     }
 
     constructor() {
@@ -40,13 +44,14 @@ class History {
     }
 
     redo() {
-        if (this._cancelHistory.length) {
-            let item = this._cancelHistory.pop();
-            this._cancelHistory.push(item);
+        let item = this._cancelHistory.pop();
+        if (item !== undefined) {
+            this._history.push(item);
         }
+        return item;
     }
 
-    clear(){
+    clear() {
         this._history = [];
         this._cancelHistory = [];
     }
